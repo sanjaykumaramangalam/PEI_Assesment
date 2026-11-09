@@ -28,7 +28,7 @@ Notebooks only orchestrate (read -> call `sales_lib` -> check -> write). Every r
 2. `src/ingestion` -> `src/transformations` -> `src/aggregations`
 3. `SQL_agg/SQL_Aggeration`
 
-Source: `/Volumes/cdp_uat/coe_aag_db/aag_files/Learning_Files/`. Target schema: `cdp_uat.coe_aag_db`.
+Source: `/Volumes/test/db_name/aag_files/Learning_Files/`. Target schema: `test.db_name`.
 Runs on serverless compute.
 
 ## Tables
