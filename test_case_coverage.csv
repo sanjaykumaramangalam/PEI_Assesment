@@ -1,0 +1,67 @@
+S.No,Folder,File,Area,Test Function,Test Scenario,Input,Expected Result,Type,Status
+1,Test_Data/tests,test_sales_transforms.py,Read / Save,test_standardize_columns,Standardize column names,"Customer ID, Sub-Category, Price per product","customer_id, sub_category, price_per_product",Positive,Passed
+2,Test_Data/tests,test_sales_transforms.py,Read / Save,test_standardize_columns_edge_cases,Column name with extra spaces," Order  ID ",order_id,Positive,Passed
+3,Test_Data/tests,test_sales_transforms.py,Read / Save,test_standardize_columns_edge_cases,Column name with brackets,Product Name (EN),product_name_en,Positive,Passed
+4,Test_Data/tests,test_sales_transforms.py,Read / Save,test_standardize_columns_edge_cases,Column name already clean,already_clean,already_clean (unchanged),Positive,Passed
+5,Test_Data/tests,test_sales_transforms.py,Read / Save,test_save_table_without_schema_creates_temp_view,Save without schema creates temp view,1 row,View readable with 1 row,Positive,Passed
+6,Test_Data/tests,test_sales_transforms.py,Read / Save,test_save_table_overwrites_old_data,Re-run replaces old data (no append),1 row then 3 rows,3 rows,Positive,Passed
+7,Test_Data/tests,test_sales_transforms.py,Read / Save,test_read_orders_missing_file_fails,Source file missing,does_not_exist.json,Job fails with error,Negative,Passed
+8,Test_Data/tests,test_sales_transforms.py,Clean - Customer Name,test_clean_customer_name,Digits in name,Gary567 Hansen,Gary Hansen,Positive,Passed
+9,Test_Data/tests,test_sales_transforms.py,Clean - Customer Name,test_clean_customer_name,Symbols in name,Pete@#$ Takahito,Pete Takahito,Positive,Passed
+10,Test_Data/tests,test_sales_transforms.py,Clean - Customer Name,test_clean_customer_name,Extra spaces in name,"  Tracy   Blumstein ",Tracy Blumstein,Positive,Passed
+11,Test_Data/tests,test_sales_transforms.py,Clean - Customer Name,test_clean_customer_name,Apostrophe kept,Jack O'Briant,Jack O'Briant,Positive,Passed
+12,Test_Data/tests,test_sales_transforms.py,Clean - Customer Name,test_clean_customer_name,Accented letters kept,Peter Bühler,Peter Bühler,Positive,Passed
+13,Test_Data/tests,test_sales_transforms.py,Clean - Customer Name,test_clean_customer_name,Name with only digits,12345,NULL,Negative,Passed
+14,Test_Data/tests,test_sales_transforms.py,Clean - Customer Name,test_clean_customer_name,Empty name,(empty string),NULL,Negative,Passed
+15,Test_Data/tests,test_sales_transforms.py,Clean - Customer Name,test_clean_customer_name,Name with only spaces,(spaces),NULL,Negative,Passed
+16,Test_Data/tests,test_sales_transforms.py,Clean - Customer Name,test_clean_customer_name,Missing name,NULL,NULL,Negative,Passed
+17,Test_Data/tests,test_sales_transforms.py,Clean - Customers,test_clean_customers,"Trim/upper id, remove duplicates, drop missing id, default Unknown","' c1 ', duplicate C1, C2 with no name/country, NULL id","C1 and C2 only; C2 name/country = Unknown",Positive & Negative,Passed
+18,Test_Data/tests,test_sales_transforms.py,Clean - Customers,test_clean_customers_blank_values,Blank customer id / name / country,"id '   '; C3 with blank name and country","Blank id dropped; C3 = Unknown, Unknown",Negative,Passed
+19,Test_Data/tests,test_sales_transforms.py,Clean - Customers,test_clean_customers_empty_input,Empty customer file,0 rows,"0 rows, no error",Negative,Passed
+20,Test_Data/tests,test_sales_transforms.py,Clean - Products,test_clean_products_keeps_one_row_per_product,"Duplicate product id, missing sub-category, bad price","P1 twice; P2 with NULL sub-category and price 'bad'","One row per id; sub-category = Unknown; price = NULL",Positive & Negative,Passed
+21,Test_Data/tests,test_sales_transforms.py,Clean - Products,test_clean_products_blank_values,Blank product id / category / price,"id ''; P3 with blank category, sub-category, price","Blank id dropped; P3 = Unknown, Unknown, NULL",Negative,Passed
+22,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_parses_day_first_dates,Day-first date format,2/7/2015,2015-07-02 (2 July),Positive,Passed
+23,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_date_edge_cases,Leap day,29/2/2016,2016-02-29,Positive,Passed
+24,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_date_edge_cases,Date with extra spaces," 21/8/2016 ",2016-08-21,Positive,Passed
+25,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_date_edge_cases,Date with leading zero,01/12/2016,2016-12-01,Positive,Passed
+26,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_drops_invalid_rows,Impossible date,31/2/2016,Row dropped,Negative,Passed
+27,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_drops_invalid_rows,Not a leap year,29/2/2017,Row dropped,Negative,Passed
+28,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_drops_invalid_rows,Month 13,21/13/2016,Row dropped,Negative,Passed
+29,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_drops_invalid_rows,Wrong date format,2016-08-21,Row dropped,Negative,Passed
+30,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_drops_invalid_rows,2-digit year,21/8/16,Row dropped,Negative,Passed
+31,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_drops_invalid_rows,Empty order date,(empty string),Row dropped,Negative,Passed
+32,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_drops_invalid_rows,Missing order date,NULL,Row dropped,Negative,Passed
+33,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_drops_invalid_rows,Missing order id,NULL,Row dropped,Negative,Passed
+34,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_drops_invalid_rows,Blank order id,(spaces),Row dropped,Negative,Passed
+35,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_drops_invalid_rows,Missing customer id,NULL,Row dropped,Negative,Passed
+36,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_drops_invalid_rows,Blank customer id,(spaces),Row dropped,Negative,Passed
+37,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_drops_invalid_rows,Missing product id,NULL,Row dropped,Negative,Passed
+38,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_drops_invalid_rows,Blank product id,(empty string),Row dropped,Negative,Passed
+39,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_drops_invalid_rows,Text in profit,n/a,Row dropped,Negative,Passed
+40,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_drops_invalid_rows,Empty profit,(empty string),Row dropped,Negative,Passed
+41,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_drops_invalid_rows,Missing profit,NULL,Row dropped,Negative,Passed
+42,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_removes_duplicates,Exact duplicate rows,Same row twice + 1 other,2 rows,Negative,Passed
+43,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_same_row_id_counted_once,Same row_id with different values,row_id 1 with profit 10 and 99,1 row (profit not doubled),Negative,Passed
+44,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_keeps_row_with_bad_optional_fields,Bad ship date and quantity,"ship_date 'not a date', quantity 'abc'","Row kept; ship_date and quantity = NULL",Negative,Passed
+45,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_all_rows_invalid_gives_empty_result,All rows invalid,2 invalid rows,0 rows,Negative,Passed
+46,Test_Data/tests,test_sales_transforms.py,Clean - Orders,test_clean_orders_missing_required_column_fails,Schema change - required column missing,Orders without profit column,Job fails with error,Negative,Passed
+47,Test_Data/tests,test_sales_transforms.py,Enrich,test_enriched_orders_rounds_profit_to_2dp,Round profit to 2 decimals,10.5678,10.57,Positive,Passed
+48,Test_Data/tests,test_sales_transforms.py,Enrich,test_enriched_orders_rounds_profit_to_2dp,Round negative profit,-14.9249,-14.92,Positive,Passed
+49,Test_Data/tests,test_sales_transforms.py,Enrich,test_enriched_orders_rounds_profit_to_2dp,Round small decimals,2.004,2.0,Positive,Passed
+50,Test_Data/tests,test_sales_transforms.py,Enrich,test_enriched_orders_adds_customer_and_product_columns,Add customer and product details,Order C1 / P1,"Alex Avila, United States, Technology, Phones, year 2016",Positive,Passed
+51,Test_Data/tests,test_sales_transforms.py,Enrich,test_enriched_orders_keeps_orders_without_match,Customer and product not found,Order C9 / P9,"Order kept; all details = Unknown",Negative,Passed
+52,Test_Data/tests,test_sales_transforms.py,Enrich,test_enriched_orders_row_count_unchanged,Join does not change row count,5 orders,5 rows,Positive,Passed
+53,Test_Data/tests,test_sales_transforms.py,Enrich,test_enriched_orders_matches_ids_with_case_and_spaces,IDs with different case and spaces,"' c1 ', 'p1 '","Matches Alex Avila, Technology",Positive,Passed
+54,Test_Data/tests,test_sales_transforms.py,Enrich,test_enriched_orders_partial_match,Customer found but product not found,Order C1 / P9,"Alex Avila; category = Unknown",Negative,Passed
+55,Test_Data/tests,test_sales_transforms.py,Enrich,test_enriched_orders_duplicate_master_rows_do_not_duplicate_orders,Duplicate customer/product master rows,C1 twice and P1 twice,1 order row (not multiplied),Negative,Passed
+56,Test_Data/tests,test_sales_transforms.py,Enrich,test_enriched_orders_empty_orders,No orders,0 rows,"0 rows, no error",Negative,Passed
+57,Test_Data/tests,test_sales_transforms.py,Aggregate,test_profit_aggregate,"Profit by year, category, sub-category, customer",4 orders,3 grouped rows with correct totals,Positive,Passed
+58,Test_Data/tests,test_sales_transforms.py,Aggregate,test_profit_by_year,Profit by year,4 orders,"2016 = -5.0, 2017 = 7.5",Positive,Passed
+59,Test_Data/tests,test_sales_transforms.py,Aggregate,test_profit_by_year_and_category,Profit by year and category,4 orders,"2016 Furniture -20.0, 2016 Technology 15.0, 2017 Technology 7.5",Positive,Passed
+60,Test_Data/tests,test_sales_transforms.py,Aggregate,test_profit_by_customer,Profit by customer,4 orders,"Alex Avila -5.0, Ben Wallace 7.5",Positive,Passed
+61,Test_Data/tests,test_sales_transforms.py,Aggregate,test_profit_by_customer_and_year,Profit by customer and year,4 orders,"Alex Avila 2016 -5.0, Ben Wallace 2017 7.5",Positive,Passed
+62,Test_Data/tests,test_sales_transforms.py,Aggregate,test_profit_aggregate_groups_unmatched_as_unknown,Unknown products grouped as Unknown,Orders with P8 and P9,"1 row: Unknown, Unknown, 3.0",Negative,Passed
+63,Test_Data/tests,test_sales_transforms.py,Aggregate,test_profit_aggregate_no_floating_point_noise,Floating point rounding,0.10 + 0.20,0.3,Positive,Passed
+64,Test_Data/tests,test_sales_transforms.py,Aggregate,test_profit_aggregate_empty_input,No orders,0 rows,"0 rows, no error",Negative,Passed
+65,Test_Data/tests,test_sales_transforms.py,Aggregate,test_profit_by_unknown_column_fails,Group by column that does not exist,region,Job fails with error,Negative,Passed
+66,Test_Data/tests,test_sales_transforms.py,End to End,test_pipeline_on_sample_files,Full pipeline on sample files,"Orders.json, Customer.xlsx, Products.csv","No orders lost; no NULL keys; total profit matches at every step",Positive,Passed
